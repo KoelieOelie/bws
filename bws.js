@@ -17,10 +17,27 @@ class BWS {
         Promise.all([wisdom.load(), erdwin.load()]).then(loaded => {
             loaded.forEach(font => document.fonts.add(font));
             window.postMessage("loaded");
+            this.#ctx.textAlign = "center";
+            this.#ctx.font = "35pt wisdom";
+            this.#ctx.fillText("Wachten op een bestand...", this.#canvas.width / 2, this.#canvas.height / 2);
         });
     }
+    readFile(file){
+        if (file.name.endsWith(".bws")) {
+            //file.
+            var reader = new FileReader();
+            reader.onload = (event) => {
+                this.#parseFile(event.target.result);
+            };
+            reader.readAsText(file);
+        }else{
+            this.#parseFile(false);
+        }
+    }
     #parseFile(file){
+        this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
         if (file!=false) {
+            this.#output.innerHTML='';
             file = file.replaceAll("\r\n", "\n");
             file = file.split("\n");
             console.log(file);
@@ -125,7 +142,7 @@ class BWS {
         }else{
             this.#ctx.textAlign = "center";
             this.#ctx.font = "35pt wisdom";
-            this.#ctx.fillText("Kon bestand niet openen!", 220 + 220, 170);
+            this.#ctx.fillText("Kon bestand niet openen!", this.#canvas.width / 2, this.#canvas.height / 2);
         }
         
     }

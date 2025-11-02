@@ -10,23 +10,63 @@
             margin: 0;
             padding: 0;
         }
-        #output{
-            height: 29.7cm;
-            width: 21cm;
-            padding-left: 11px;
-
-        }
         li canvas:nth-child(0){
             padding-left: 4px;
+        }
+        #drop-zone {
+        width: 300px;
+        height: 150px;
+        border: 2px dashed #aaa;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 150px;
+        font-family: sans-serif;
+        color: #555;
+        margin: 50px auto;
+        }
+
+        #drop-zone.dragover {
+        background-color: #e0ffe0;
+        border-color: green;
+        }
+        @media print{
+            #drop-zone{
+                display: none;
+            }
+            #output{
+                height: 29.7cm;
+                width: 21cm;
+                padding-left: 11px;
+                background-color: azure;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="drop-zone">Drag & Drop Files Here</div>
     <div id="output"></div>
     <script>
         var bws= new BWS(document.getElementById("output"));
+        const dropZone = document.getElementById('drop-zone');
         window.addEventListener("message", (event) => {
-            bws.load_file("Links Regs (2).bws");
+            dropZone.addEventListener('dragover', (event) => {
+                event.preventDefault(); // Needed to allow dropping
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (event) => {
+                event.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = event.dataTransfer.files;
+                console.log(files.length);
+                if (files.length==1) {
+                    bws.readFile(files.item(0));
+                }
+            });
         });
         
     </script>
