@@ -12,8 +12,8 @@ class BWS {
         this.#elm.appendChild(this.#canvas);
         this.#output = document.createElement("ul");
         this.#elm.appendChild(this.#output);
-        let wisdom = new FontFace("wisdom", "url('Wisdom Script AJ.otf')");
-        let erdwin = new FontFace("erdwin", "url('Edwin-Italic.otf')");
+        let wisdom = new FontFace("wisdom", "url('assets/fonts/Wisdom Script AJ.otf')");
+        let erdwin = new FontFace("erdwin", "url('assets/fonts/Edwin-Italic.otf')");
         Promise.all([wisdom.load(), erdwin.load()]).then(loaded => {
             loaded.forEach(font => document.fonts.add(font));
             window.postMessage("loaded");
@@ -78,27 +78,27 @@ class BWS {
                             var tmp = document.createElement("img");
                             switch (element.charAt(cell).toLowerCase()) {
                                 case "|":
-                                    tmp.src = "I_AA.svg";
+                                    tmp.src = "assets/img/I_AA.svg";
                                     break;
                                 case " ":
-                                    tmp.src = "I_AB.svg";
+                                    tmp.src = "assets/img/I_AB.svg";
                                     break;
                                 case "!":
-                                    tmp.src = "I_AC.svg";
+                                    tmp.src = "assets/img/I_AC.svg";
                                     break;
                                 case "-":
-                                    tmp.src = "I_J.svg";
+                                    tmp.src = "assets/img/I_J.svg";
                                     if (element.charAt(cell + 1) != "-") {
                                         row.appendChild(tmp);
                                         tmp = document.createElement("img");
-                                        tmp.src = "I_AA.svg";
+                                        tmp.src = "assets/img/I_AA.svg";
                                     }
                                     break;
                                 case "~":
-                                    tmp.src = "I_I.svg";
+                                    tmp.src = "assets/img/I_I.svg";
                                     break;
                                 case "r":
-                                    tmp.src = "I_R.svg";
+                                    tmp.src = "assets/img/I_R.svg";
                                     break;
                                 default:
                                     tmp.setAttribute("data-src", `I_${(element.charAt(cell)).toUpperCase()}`);
@@ -121,12 +121,12 @@ class BWS {
 
             }
             var logo = new Image()
-            logo.src = `Logo_${headers["in"]}.png`;
+            logo.src = `assets/img/Logo_${headers["in"]}.png`;
             logo.onload = () => {
                 this.#ctx.drawImage(logo, 0, 0, 192, 288);
             };
             this.#output.querySelectorAll('[data-src]').forEach(function (elm) {
-                elm.src = `${elm.getAttribute("data-src")}.${headers["in"]}.svg`;
+                elm.src = `assets/img/${elm.getAttribute("data-src")}.${headers["in"]}.svg`;
             });
 
             this.#ctx.textAlign = "center";
